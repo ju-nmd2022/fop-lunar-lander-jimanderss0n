@@ -4,7 +4,7 @@ let y = 200;
 noStroke();
 
 //Stars
-/*
+
 let starX = [];
 let starY = [];
 let starAlpha = [];
@@ -17,21 +17,13 @@ for (let i = 0; i < 200; i++) {
   starY.push(y);
   starAlpha.push(alpha);
 }
-function draw() {
-  noStroke();
-  background(0, 0, 0);
+function draw() {}
 
-  for (let index in starX) {
-    fill(255, 255, 255, starAlpha[index] * 255);
-    ellipse(starX[index], starY[index], 3);
-  }
-}
-*/
 //Rocket graphics
 
 //base rocket
 
-function rocket() {
+function rocket(x, y) {
   fill(30, 160, 255);
   beginShape();
   vertex(x - 25.5, y + 50);
@@ -154,10 +146,20 @@ function rocket() {
   endShape();
   pop();
 }
-rocket(x, y);
+
+//Moon
+
+//Base shape
+
+function moon() {
+  fill(150, 150, 180);
+  ellipse(x, y + 350, 800, 200);
+  fill(120, 120, 150);
+  ellipse(x - 100, y + 340, 800, 110);
+}
 
 //Thrust animation
-push();
+
 let particles = [];
 
 function createParticle(x, y) {
@@ -188,13 +190,25 @@ function updateParticle(particle) {
   }
 }
 
-// for (let i = 0; i < 500; i++) {
-//   const particle = createParticle();
-//   particles.push(particle);
-// }
+//Activate all functions
+
+let isGameActive = true;
+
+let rocketY = 100;
+let velocity = 1;
+let acceleration = 0.2;
 
 function draw() {
-  clear();
+  noStroke();
+  background(0, 0, 0);
+
+  for (let index in starX) {
+    fill(255, 255, 255, Math.abs(Math.sin(starAlpha[index])) * 255);
+    ellipse(starX[index], starY[index], 3);
+    starAlpha[index] = starAlpha[index] + 0.03;
+  }
+  moon(x, y);
+
   for (let particle of particles) {
     drawParticle(particle);
     updateParticle(particle);
@@ -202,23 +216,13 @@ function draw() {
 
   if (keyIsDown(32)) {
     for (let i = 0; i < 200; i++) {
-      let particle = createParticle(x, y + 52);
+      let particle = createParticle(x, rocketY + 52);
       particles.push(particle);
     }
   }
+
+  rocket(300, rocketY);
+
+  rocketY = rocketY + velocity;
+  velocity = velocity + acceleration;
 }
-pop();
-//Moon
-
-//Base shape
-
-function moon() {
-  fill(150, 150, 180);
-  ellipse(x, y + 350, 800, 200);
-  fill(120, 120, 150);
-  ellipse(x - 100, y + 340, 800, 110);
-}
-
-moon(x, y);
-
-//Thrust activation
