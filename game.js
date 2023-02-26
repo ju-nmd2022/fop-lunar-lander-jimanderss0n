@@ -173,8 +173,8 @@ function drawParticle(particle) {
   push();
   translate(particle.x, particle.y);
   noStroke();
-  fill(255, 180, 0, 20);
-  ellipse(0, 0, 4);
+  fill(255, 110, 0, 20);
+  ellipse(0, 0, 15);
   pop();
 }
 
@@ -190,17 +190,36 @@ function updateParticle(particle) {
   }
 }
 
+// start screen
+push();
+function startFunction() {
+  fill(0, 0, 0, 200);
+  rect(0, 0, width, height);
+  fill(255, 255, 255);
+  text("Welcome to Luna Lander!", x - 65, y - 100, [x, y]);
+  textSize(10);
+}
+pop();
+
 //Activate all functions
 
-let isGameActive = true;
+let isGameActive = false;
+
+startScreen = true;
 
 let rocketY = 100;
-let velocity = 1;
+let velocity = 4;
 let acceleration = 0.2;
 
 function draw() {
   noStroke();
   background(0, 0, 0);
+
+  //Activate game
+  if (mouseIsPressed) {
+    isGameActive = true;
+    startScreen = false;
+  }
 
   for (let index in starX) {
     fill(255, 255, 255, Math.abs(Math.sin(starAlpha[index])) * 255);
@@ -221,8 +240,23 @@ function draw() {
     }
   }
 
+  //make rocket fall down
   rocket(300, rocketY);
+  if (isGameActive) {
+    rocketY = rocketY + velocity;
+    velocity = velocity + acceleration;
 
-  rocketY = rocketY + velocity;
-  velocity = velocity + acceleration;
+    //make rocket stop
+    if (rocketY > 415) {
+      isGameActive = false;
+    }
+
+    //make rocket accelerate up
+    if (keyIsDown(32) && isGameActive) {
+      velocity = velocity - 0.5;
+    }
+  }
+  if (startScreen) {
+    startFunction(x, y);
+  }
 }
