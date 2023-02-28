@@ -190,14 +190,43 @@ function updateParticle(particle) {
   }
 }
 
-// start screen
+// start screen graphics
 push();
 function startFunction() {
   fill(0, 0, 0, 200);
   rect(0, 0, width, height);
   fill(255, 255, 255);
-  text("Welcome to Luna Lander!", x - 65, y - 100, [x, y]);
-  textSize(10);
+  text("Welcome to Luna Lander!", x - 260, y - 100, [x, y]);
+  textSize(30);
+  text("Press Mouse1 to start", x - 135, y - 35, [x, y]);
+  text("Control thrust with space key", x - 185, y, [x, y]);
+  textSize(50);
+}
+pop();
+
+// crash screen graphics
+push();
+function crashFunction() {
+  fill(0, 0, 0, 200);
+  rect(0, 0, width, height);
+  fill(255, 255, 255);
+  text("Dead.", x - 35, y - 100, [x, y]);
+  textSize(30);
+  text("Press Mouse1 to try again", x - 135, y - 35, [x, y]);
+  textSize(50);
+}
+pop();
+
+// land screen graphics
+push();
+function landFunction() {
+  fill(0, 0, 0, 200);
+  rect(0, 0, width, height);
+  fill(255, 255, 255);
+  text("You Landed!", x - 100, y - 100, [x, y]);
+  textSize(30);
+  text("Press Mouse1 to play again", x - 135, y - 35, [x, y]);
+  textSize(50);
 }
 pop();
 
@@ -205,7 +234,9 @@ pop();
 
 let isGameActive = false;
 
-startScreen = true;
+let startScreen = true;
+
+let crashScreen = false;
 
 let rocketY = 100;
 let velocity = 4;
@@ -221,6 +252,7 @@ function draw() {
     startScreen = false;
   }
 
+  //stars
   for (let index in starX) {
     fill(255, 255, 255, Math.abs(Math.sin(starAlpha[index])) * 255);
     ellipse(starX[index], starY[index], 3);
@@ -228,13 +260,14 @@ function draw() {
   }
   moon(x, y);
 
+  //Thrust
   for (let particle of particles) {
     drawParticle(particle);
     updateParticle(particle);
   }
 
   if (keyIsDown(32)) {
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 80; i++) {
       let particle = createParticle(x, rocketY + 52);
       particles.push(particle);
     }
@@ -252,11 +285,26 @@ function draw() {
     }
 
     //make rocket accelerate up
-    if (keyIsDown(32) && isGameActive) {
+    if (keyIsDown(32)) {
       velocity = velocity - 0.5;
     }
   }
+
+  //startscreen
   if (startScreen) {
     startFunction(x, y);
+  }
+
+  //Crash screen
+  if (rocketY > 415 && velocity > 3) {
+    crashFunction(x, y);
+    isGameActive = false;
+  }
+
+  //Land screen
+  //Crash screen
+  if (rocketY > 415 && velocity < 3) {
+    landFunction(x, y);
+    isGameActive = false;
   }
 }
