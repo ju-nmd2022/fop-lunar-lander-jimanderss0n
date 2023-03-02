@@ -17,7 +17,6 @@ for (let i = 0; i < 200; i++) {
   starY.push(y);
   starAlpha.push(alpha);
 }
-function draw() {}
 
 //Rocket graphics
 
@@ -207,12 +206,12 @@ pop();
 // crash screen graphics
 push();
 function crashFunction() {
-  fill(0, 0, 0, 200);
+  fill(0, 0, 0, 100);
   rect(0, 0, width, height);
   fill(255, 255, 255);
-  text("Dead.", x - 35, y - 100, [x, y]);
+  text("Crashed", x - 70, y - 100, [x, y]);
   textSize(30);
-  text("Press Mouse1 to try again", x - 135, y - 35, [x, y]);
+  text("Press Mouse1 to try again", x - 155, y - 35, [x, y]);
   textSize(50);
 }
 pop();
@@ -220,12 +219,12 @@ pop();
 // land screen graphics
 push();
 function landFunction() {
-  fill(0, 0, 0, 200);
+  fill(0, 0, 0, 100);
   rect(0, 0, width, height);
   fill(255, 255, 255);
   text("You Landed!", x - 100, y - 100, [x, y]);
   textSize(30);
-  text("Press Mouse1 to play again", x - 135, y - 35, [x, y]);
+  text("Press Mouse1 to play again", x - 155, y - 35, [x, y]);
   textSize(50);
 }
 pop();
@@ -237,6 +236,8 @@ let isGameActive = false;
 let startScreen = true;
 
 let crashScreen = false;
+
+let landScreen = false;
 
 let rocketY = 100;
 let velocity = 4;
@@ -297,14 +298,32 @@ function draw() {
 
   //Crash screen
   if (rocketY > 415 && velocity > 3) {
+    crashScreen = true;
+    }
+    if (mouseIsPressed) {
+      crashScreen = false;
+      rocketY = 100;
+      velocity = 4;
+      acceleration = 0.2;
+      isGameActive = true;
+    }
+  }
+  if (crashScreen) {
     crashFunction(x, y);
-    isGameActive = false;
   }
 
   //Land screen
-  //Crash screen
   if (rocketY > 415 && velocity < 3) {
+    landScreen = true;
+    if (mouseIsPressed) {
+      landScreen = false;
+      rocketY = 100;
+      velocity = 4;
+      acceleration = 0.2;
+      isGameActive = true;
+    }
+  }
+  if (landScreen) {
     landFunction(x, y);
-    isGameActive = false;
   }
 }
