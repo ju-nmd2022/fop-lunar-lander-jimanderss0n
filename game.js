@@ -1,7 +1,10 @@
-background(0, 0, 0);
+function setup() {
+  createCanvas(800, 600);
+  frameRate(30);
+}
+
 let x = 300;
 let y = 200;
-noStroke();
 
 //Stars
 
@@ -9,8 +12,8 @@ let starX = [];
 let starY = [];
 let starAlpha = [];
 for (let i = 0; i < 200; i++) {
-  const x = Math.floor(Math.random() * width);
-  const y = Math.floor(Math.random() * height);
+  const x = Math.floor(Math.random() * 800);
+  const y = Math.floor(Math.random() * 600);
   const alpha = Math.random();
 
   starX.push(x);
@@ -190,10 +193,9 @@ function updateParticle(particle) {
 }
 
 // start screen graphics
-push();
 function startFunction() {
-  fill(0, 0, 0, 200);
-  rect(0, 0, width, height);
+  fill(0, 0, 0, 100);
+  rect(0, 0, 800, 600);
   fill(255, 255, 255);
   text("Welcome to Luna Lander!", x - 260, y - 100, [x, y]);
   textSize(30);
@@ -201,33 +203,28 @@ function startFunction() {
   text("Control thrust with space key", x - 185, y, [x, y]);
   textSize(50);
 }
-pop();
 
 // crash screen graphics
-push();
 function crashFunction() {
   fill(0, 0, 0, 100);
-  rect(0, 0, width, height);
+  rect(0, 0, 800, 600);
   fill(255, 255, 255);
   text("Crashed", x - 70, y - 100, [x, y]);
   textSize(30);
   text("Press Mouse1 to try again", x - 155, y - 35, [x, y]);
   textSize(50);
 }
-pop();
 
 // land screen graphics
-push();
 function landFunction() {
   fill(0, 0, 0, 100);
-  rect(0, 0, width, height);
+  rect(0, 0, 800, 600);
   fill(255, 255, 255);
   text("You Landed!", x - 100, y - 100, [x, y]);
   textSize(30);
   text("Press Mouse1 to play again", x - 155, y - 35, [x, y]);
   textSize(50);
 }
-pop();
 
 //Activate all functions
 
@@ -299,7 +296,7 @@ function draw() {
   //Crash screen
   if (rocketY > 415 && velocity > 3) {
     crashScreen = true;
-    }
+
     if (mouseIsPressed) {
       crashScreen = false;
       rocketY = 100;
